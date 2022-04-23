@@ -8,13 +8,6 @@ class AbsServer(object, metaclass=ABCMeta):
     基本機能のまとめ。
     """
     
-    ip_address: str
-    port: str
-    password: str
-    
-    def __init__(self) -> None:
-        pass
-    
     @abstractmethod
     def start(self) -> None:
         """_summary_\n
@@ -38,7 +31,9 @@ class AbsServer(object, metaclass=ABCMeta):
     
 
 class ServerCondition():
-    
+    """"_summary_\n
+    サーバーの稼働状態を表すクラス。（inteface）
+    """
     in_operating: const[str] = "In Operating" # サーバーが起動中
     in_stopping: const[str] = "In Stopping" # サーバーが停止中
     available: const[str] = "Available" #サーバーは停止中だが、起動可能
