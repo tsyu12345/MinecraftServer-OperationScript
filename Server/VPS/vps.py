@@ -79,7 +79,7 @@ class VPS(AbsVPS):
             ・s: 通常終了→再起動\n
             ・h: 強制終了→再起動\n
         """
-        if(type not in ("soft.")):
+        if(type not in ("s", "h")):
             raise TypeError("引数typeには文字「s」.または「h」.を指定してください。")
         
         reboot_type: const[dict[str, str]] = {"s": "SOFT", "h": "HARD"}
