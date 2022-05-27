@@ -1,2 +1,3 @@
 .venv
 Server/ServerConfig.json
+__pycache__
