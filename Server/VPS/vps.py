@@ -102,6 +102,7 @@ class VPS(AbsVPS):
     def get_vps_condition(self):
         """_summary_\n
         VPSの状態を取得する。\n
+        ※リリース後に実装予定。\n
         Returns:\n
             VPSCondition: VPSの状態
         """

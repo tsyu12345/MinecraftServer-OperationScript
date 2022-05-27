@@ -22,6 +22,7 @@ class AbsVPS(object, metaclass=ABCMeta):
         self.token = self.__get_api_token()
         self.server_config: const[IServerInfo] = self.__config()
     
+    
     def __get_api_token(self) -> str:
         """_summary_\n
         APIトークンを取得する。
@@ -41,6 +42,7 @@ class AbsVPS(object, metaclass=ABCMeta):
         
         token:str = api.json()["access"]["token"]["id"]
         return token
+    
     
     def __config(self) -> IServerInfo:
         """_summary_\n
@@ -64,6 +66,7 @@ class AbsVPS(object, metaclass=ABCMeta):
         
         
         return IServerInfo(server_value)
+    
     
     @abstractmethod
     def boot(self) -> None:
