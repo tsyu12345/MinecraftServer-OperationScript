@@ -21,7 +21,7 @@ class AbsDiscordBot(object, metaclass=ABCMeta):
         """
         self.TOKEN: const[str] = self.__load_token(token_path)
         #on_messageで呼ばれるイベントハンドラーを登録する辞書。{"コマンド名": [イベントハンドラー, 引数]}
-        self.on_message_event_handler: dict[str, list[Callable | tuple]] = {} 
+        self.command_handlers: dict[str, EventHandler] = {}
     
 
     def __load_token(self, token_path:str) -> str:
@@ -38,7 +38,7 @@ class AbsDiscordBot(object, metaclass=ABCMeta):
         
         return token 
     
-    def addEventListener(self, command:str, handler:Callable, *args:tuple[T]) -> None:
+    def addCommandListener(self, command:str, handler:Callable, *args:tuple[T]) -> None:
         """_summary_\n
         on_messageで実行されるイベントハンドラーを登録する。\n
         ※1つのコマンド名に対し、1つのハンドラのみを登録可能。
@@ -46,20 +46,43 @@ class AbsDiscordBot(object, metaclass=ABCMeta):
             command (str): コマンド名\n
             handler (Callable): コマンドに対応するイベントハンドラー\n
         """
-        self.on_message_event_handler[command][0] = handler
-        self.on_message_event_handler[command][1] = args
+        self.command_handlers[command] = EventHandler(command, handler, *args)
     
-    
-    @CLIENT.event
-    async def on_message(self, message:discord.Message) -> T:
+    def removeCommandListener(self, handler:EventHandler) -> None:
         """_summary_\n
-        既定のメッセージが撃ち込まれたときに呼ばれる。イベントリスナ-
+        on_messageで実行されるイベントハンドラーを削除する。\n
+        Args:\n
+            handler (EventHandler): 削除するイベントハンドラー\n
         """
-        if message.content in self.on_message_event_handler.keys():
-            command:const[str] = message.content
-            callback = self.on_message_event_handler[command][0]
-            args:tuple[T] = self.on_message_event_handler[command][1]
-            callback(args)
+        self.command_handlers.pop(handler.event_key)
     
     
+class EventHandler():
+    """_summary_\n
+    イベントハンドラーオブジェクト。
+    """
+    
+    __COMMANDS: list = []
+    
+    def __init__(self, event_key:str, handler:Callable, args:tuple[T]) -> None:
+        self.event_key: const[str] = event_key
+        self.handler: const[Callable] = handler
+        self.args:const[tuple[T]] = args
+        
+        self.__COMMANDS.append(self.event_key)
+    
+    @classmethod
+    def commands(cls) -> list:
+        """_summary_\n
+        登録されたイベントハンドラーのコマンド名のリストを返す。
+        Returns:\n
+            list: コマンド名のリスト
+        """
+        return cls.__COMMANDS
+    
+    def exec(self) -> None:
+        """_summary_\n
+        ハンドラを実行する。
+        """
+        self.handler(*self.args)
     
