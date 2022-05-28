@@ -11,6 +11,13 @@ class DiscordBot(AbsDiscordBot):
     
     def __init__(self, token_path:str):
         super().__init__(token_path)
+        
+        
+    def run(self) -> None:
+        """_summary_\n
+        botを実行する。
+        """
+        CLIENT.run()
     
     
     @CLIENT.event
