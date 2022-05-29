@@ -97,6 +97,14 @@ class AbsVPS(object, metaclass=ABCMeta):
         pass
     
     @abstractmethod
+    def start_minecraft(self) -> None:
+        """_summary_\n
+        Minecraftを起動する。\n
+        java -Xmx1024M -Xms1024M -jar minecraft_server.1.18.2.jar -noguiの実行
+        """
+        pass
+    
+    @abstractmethod
     def get_vps_condition(self) -> VPSCondition:
         """_summary_\n
         VPSの状態を取得する。

@@ -20,35 +20,25 @@ class AbsMinecraftServer(object, metaclass=ABCMeta):
         
         self.server:Client = self.__config()
     
-    @abstractmethod
-    def start(self) -> None:
-        """_summary_\n
-        サーバーを起動する。
-        """
-        pass
     
     @abstractmethod
     def stop(self) -> None:
         """_summary_\n
-        ワールドを保存し、サーバーを停止する。
+        /stopコマンドを実行する。
         Returns:\n
             str: stopコマンド送信結果文字列。
         """
         pass
     
     @abstractmethod
-    def reboot(self) -> None:
+    def send_message(self, message:str) -> None:
         """_summary_\n
-        サーバーを再起動する。
+        サーバーにメッセージを送信する。
+        Args:\n
+            message (str): 送信するメッセージ。
         """
         pass
     
-    @abstractmethod
-    def get_server_condition(self) -> ServerCondition:
-        """_summary_\n
-        サーバーの状態を取得する。
-        """
-        pass
     
     def __config(self) -> Client:
         """_summary_\n
@@ -59,7 +49,7 @@ class AbsMinecraftServer(object, metaclass=ABCMeta):
         rcon_client = Client(self.rcon_param.ip_address, self.rcon_param.port, passwd=self.rcon_param.password)
         rcon_client.connect(True)
         #TODO:リリーステストで外す↓
-        rcon_client.say("This is RCON test. connect success.")
+        rcon_client.say("This RCON test. connect success.")
         
         return rcon_client
         

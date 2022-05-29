@@ -16,19 +16,11 @@ class MinecraftServer(AbsMinecraftServer):
         super().__init__(remote_host_param, rcon_param)
         
     
-    
-    def start(self) -> None:
-        pass
-    
     def stop(self) -> None:
-        pass
-    
-    def reboot(self) -> None:
-        pass
-    
-    def get_server_condition(self):
-        pass
-            
+        self.server.stop()
+        
+    def send_message(self, message:str) -> None:
+        self.server.say(message)
         
         
 if __name__ == "__main__":
@@ -45,4 +37,4 @@ if __name__ == "__main__":
         user_name=""
     )
     
-    MinecraftServer(dummy, rcon_param)
+    MinecraftServer(dummy, rcon_param).stop()
