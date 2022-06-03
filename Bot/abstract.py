@@ -55,6 +55,13 @@ class AbsDiscordBot(object, metaclass=ABCMeta):
             handler (EventHandler): 削除するイベントハンドラー\n
         """
         self.command_handlers.pop(handler.event_key)
+        
+    @abstractmethod
+    def on_message(self, message:discord.Message) -> None:
+        """_summary_\n
+        on_messageで実行されるイベントハンドラーを実行する。\n
+        """
+        pass
     
     
 class EventHandler():
