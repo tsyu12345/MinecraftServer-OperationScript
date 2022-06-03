@@ -143,6 +143,22 @@ class ConohaAPIParam(object):
         self.user_name:const[str] = user_name
         self.tenantId:const[str] = tenantId
 
+class ISSHParam():
+    """_summary_\n
+    VPSのSSH接続情報を表すインターフェース。
+    """
+    def __init__(self, ipv4:str, user:str, port:int, password:str) -> None:
+        """_summary_\n
+        Args:
+            ipv4 (str): VPSのIPアドレス(IPv4)
+            user (str): ログインユーザー名
+            port (int): ポート番号
+            password (str): ログインパスワード
+        """
+        self.ipv4:const[str] = ipv4
+        self.user:const[str] = user
+        self.port:const[int] = port
+        self.password:const[str] = password
 
 class IServerInfo(object):
     """_summary_\n

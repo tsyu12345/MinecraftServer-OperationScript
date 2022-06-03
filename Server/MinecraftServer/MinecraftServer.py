@@ -1,16 +1,11 @@
 from __future__ import annotations
 from typing import Final as const, Any
 
-from mcipc.rcon.je import Biome, Client
-
-from abstract import AbsMinecraftServer, LoginParam, ServerCondition
+from Abstract import AbsMinecraftServer, LoginParam, ServerCondition
 class MinecraftServer(AbsMinecraftServer):
     """_summary_\n
     MinecraftServerを操作するクラス。
     """
-    
-    SERVER_DIR:const[str] = "/opt/minecraft_server"
-    SERVER_START_COMMAND: const[str] = "java -Xmx1024M -Xms1024M -jar minecraft_server.1.18.2.jar -nogui"
     
     def __init__(self, remote_host_param:LoginParam, rcon_param:LoginParam) -> None:
         super().__init__(remote_host_param, rcon_param)
