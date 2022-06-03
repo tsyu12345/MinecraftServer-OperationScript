@@ -22,6 +22,7 @@ class AbsVPS(object, metaclass=ABCMeta):
         self.token = self.__get_api_token()
         self.server_config: const[IServerInfo] = self.__config()
     
+    
     def __get_api_token(self) -> str:
         """_summary_\n
         APIトークンを取得する。
@@ -41,6 +42,7 @@ class AbsVPS(object, metaclass=ABCMeta):
         
         token:str = api.json()["access"]["token"]["id"]
         return token
+    
     
     def __config(self) -> IServerInfo:
         """_summary_\n
@@ -64,6 +66,7 @@ class AbsVPS(object, metaclass=ABCMeta):
         
         
         return IServerInfo(server_value)
+    
     
     @abstractmethod
     def boot(self) -> None:
@@ -90,6 +93,14 @@ class AbsVPS(object, metaclass=ABCMeta):
     def reboot(self) -> None:
         """_summary_\n
         VPSを再起動する。
+        """
+        pass
+    
+    @abstractmethod
+    def start_minecraft(self) -> None:
+        """_summary_\n
+        Minecraftを起動する。\n
+        java -Xmx1024M -Xms1024M -jar minecraft_server.1.18.2.jar -noguiの実行
         """
         pass
     
@@ -132,6 +143,22 @@ class ConohaAPIParam(object):
         self.user_name:const[str] = user_name
         self.tenantId:const[str] = tenantId
 
+class ISSHParam():
+    """_summary_\n
+    VPSのSSH接続情報を表すインターフェース。
+    """
+    def __init__(self, ipv4:str, user:str, port:int, password:str) -> None:
+        """_summary_\n
+        Args:
+            ipv4 (str): VPSのIPアドレス(IPv4)
+            user (str): ログインユーザー名
+            port (int): ポート番号
+            password (str): ログインパスワード
+        """
+        self.ipv4:const[str] = ipv4
+        self.user:const[str] = user
+        self.port:const[int] = port
+        self.password:const[str] = password
 
 class IServerInfo(object):
     """_summary_\n

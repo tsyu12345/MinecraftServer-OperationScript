@@ -2,42 +2,57 @@ from __future__ import annotations
 from typing import Final as const
 from abc import ABCMeta, abstractmethod
 
-class AbsServer(object, metaclass=ABCMeta):
+from mcipc.rcon.je import Client
+class AbsMinecraftServer(object, metaclass=ABCMeta):
     """_summary_\n
-    ServerAPIの抽象基底クラス定義。
+    MinecraftServerAPIの抽象基底クラス定義。
     基本機能のまとめ。
     """
     
-    @abstractmethod
-    def start(self) -> None:
+    def __init__(self, remote_host_param:LoginParam, rcon_param:LoginParam) -> None:
         """_summary_\n
-        サーバーを起動する。
+        Args:
+            remote_host_param (LoginParam): サーバーの本体のログイン情報。
+            rcon_param (LoginParam): サーバーのRCON情報。
         """
-        pass
+        self.remote_host_param = remote_host_param
+        self.rcon_param = rcon_param
+        
+        self.server:Client = self.__config()
+    
     
     @abstractmethod
-    def stop(self) -> str:
+    def stop(self) -> None:
         """_summary_\n
-        ワールドを保存し、サーバーを停止する。
+        /stopコマンドを実行する。
         Returns:\n
             str: stopコマンド送信結果文字列。
         """
         pass
     
-    def reboot(self) -> None:
-        """_summary_\n
-        サーバーを再起動する。
-        """
-        pass
-    
     @abstractmethod
-    def get_server_condition(self) -> ServerCondition:
+    def send_message(self, message:str) -> None:
         """_summary_\n
-        サーバーの状態を取得する。
+        サーバーにメッセージを送信する。
+        Args:\n
+            message (str): 送信するメッセージ。
         """
         pass
     
-
+    
+    def __config(self) -> Client:
+        """_summary_\n
+        MinecraftServerにRCON接続を行う。\n
+        Returns:\n
+            Client: RCON接続クラス。
+        """
+        rcon_client = Client(self.rcon_param.ip_address, self.rcon_param.port, passwd=self.rcon_param.password)
+        rcon_client.connect(True)
+        #TODO:リリーステストで外す↓
+        rcon_client.say("This RCON test. connect success.")
+        
+        return rcon_client
+        
 class ServerCondition():
     """"_summary_\n
     サーバーの稼働状態を表すクラス。（inteface）
