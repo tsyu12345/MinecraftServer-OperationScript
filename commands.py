@@ -33,5 +33,5 @@ class Commands():
         VPSを起動し、worldを開く。
         """
         cls.VPS.boot()
-        #TODO:コマンド実行でjavaコマンド実行
+        cls.VPS.start_minecraft()
     
